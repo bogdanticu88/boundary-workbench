@@ -1,3 +1,5 @@
+![Boundary Workbench](public/brand/logo.png)
+
 # Boundary Workbench 0.2.1
 
 Local design-stage threat modelling for agent platforms. Independent product; no employer branding or endorsement. No hosted service, account, model API, or telemetry is required.
