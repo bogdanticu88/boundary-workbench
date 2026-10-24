@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://boundary-workbench.local/schemas/content-pack-1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "maturity",
+    "sources",
+    "questions",
+    "threats"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9.-]{1,128}$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "maturity": {
+      "enum": [
+        "draft",
+        "reviewed"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/question"
+      }
+    },
+    "threats": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/threat"
+      }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "url",
+        "note"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2000
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 5000
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "questionId",
+        "equals"
+      ],
+      "properties": {
+        "questionId": {
+          "type": "string",
+          "pattern": "^[a-z0-9.-]{1,128}$"
+        },
+        "equals": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown",
+            "not-applicable"
+          ]
+        },
+        "participant": {
+          "enum": [
+            "scope",
+            "source",
+            "destination"
+          ]
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "explanation",
+        "scope",
+        "revision"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9.-]{1,128}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "scope": {
+          "enum": [
+            "platform",
+            "component",
+            "relationship"
+          ]
+        },
+        "capability": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "dependsOn": {
+          "$ref": "#/$defs/rule"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "componentKinds": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "user",
+              "harness",
+              "agent",
+              "tool",
+              "model",
+              "memory",
+              "queue",
+              "execution",
+              "repository",
+              "pipeline",
+              "credential-store",
+              "target"
+            ]
+          },
+          "maxItems": 13
+        },
+        "domain": {
+          "type": "string",
+          "maxLength": 100
+        }
+      }
+    },
+    "threat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "scenario",
+        "scope",
+        "requires"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "scenario": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "scope": {
+          "enum": [
+            "platform",
+            "component",
+            "relationship"
+          ]
+        },
+        "requires": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "capability": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "answers": {
+              "type": "array",
+              "maxItems": 30,
+              "items": {
+                "$ref": "#/$defs/rule"
+              }
+            },
+            "relationshipTypes": {
+              "type": "array",
+              "maxItems": 10,
+              "items": {
+                "enum": [
+                  "reads",
+                  "writes",
+                  "invokes",
+                  "delegates",
+                  "authenticates",
+                  "publishes",
+                  "passes-context"
+                ]
+              }
+            }
+          }
+        },
+        "componentKinds": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "user",
+              "harness",
+              "agent",
+              "tool",
+              "model",
+              "memory",
+              "queue",
+              "execution",
+              "repository",
+              "pipeline",
+              "credential-store",
+              "target"
+            ]
+          },
+          "maxItems": 13
+        },
+        "guidance": {
+          "type": "string",
+          "maxLength": 4000
+        }
+      }
+    }
+  }
+}

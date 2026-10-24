@@ -1,0 +1,546 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://boundary-workbench.local/schemas/assessment-1.1.json",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "applicationVersion",
+    "id",
+    "revision",
+    "createdAt",
+    "updatedAt",
+    "stage",
+    "title",
+    "scope",
+    "assumptions",
+    "exclusions",
+    "components",
+    "relationships",
+    "capabilities",
+    "answers",
+    "threats",
+    "requirements",
+    "evidence",
+    "packs"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.1"
+    },
+    "applicationVersion": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "stage": {
+      "enum": [
+        "design",
+        "implementation"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "scope": {
+      "type": "string",
+      "maxLength": 10000
+    },
+    "assumptions": {
+      "type": "string",
+      "maxLength": 20000
+    },
+    "exclusions": {
+      "type": "string",
+      "maxLength": 20000
+    },
+    "components": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "#/$defs/component"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/relationship"
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "maxProperties": 100,
+      "additionalProperties": {
+        "enum": [
+          "selected",
+          "absent",
+          "unknown",
+          "not-selected"
+        ]
+      }
+    },
+    "answers": {
+      "type": "object",
+      "maxProperties": 1000,
+      "additionalProperties": {
+        "$ref": "#/$defs/answer"
+      }
+    },
+    "threats": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/threat"
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/requirement"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "maxItems": 500,
+      "items": {
+        "$ref": "#/$defs/evidence"
+      }
+    },
+    "packs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 30,
+      "items": {
+        "$ref": "#/$defs/pack"
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner",
+        "reviewer",
+        "purpose",
+        "environment",
+        "assessmentType"
+      ],
+      "properties": {
+        "owner": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "reviewer": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "purpose": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "environment": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "assessmentType": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "kind",
+        "environment",
+        "dataClassification",
+        "identity",
+        "authority"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "kind": {
+          "enum": [
+            "user",
+            "harness",
+            "agent",
+            "tool",
+            "model",
+            "memory",
+            "queue",
+            "execution",
+            "repository",
+            "pipeline",
+            "credential-store",
+            "target"
+          ]
+        },
+        "environment": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "dataClassification": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "identity": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "authority": {
+          "type": "string",
+          "maxLength": 240
+        }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "from",
+        "to",
+        "type",
+        "trustBoundary",
+        "intended"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "from": {
+          "$ref": "#/$defs/id"
+        },
+        "to": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "enum": [
+            "reads",
+            "writes",
+            "invokes",
+            "delegates",
+            "authenticates",
+            "publishes",
+            "passes-context"
+          ]
+        },
+        "trustBoundary": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "intended": {
+          "type": "boolean"
+        }
+      }
+    },
+    "answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "updatedAt"
+      ],
+      "properties": {
+        "value": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown",
+            "not-applicable"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "maxLength": 10000
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "inactive": {
+          "type": "boolean"
+        },
+        "needsReview": {
+          "type": "boolean"
+        },
+        "inheritedFrom": {
+          "type": "string",
+          "maxLength": 160
+        }
+      }
+    },
+    "threat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "scope",
+        "title",
+        "scenario",
+        "applicability",
+        "triggeringFacts",
+        "disposition",
+        "requirementIds",
+        "evidenceIds"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "templateId": {
+          "$ref": "#/$defs/id"
+        },
+        "scope": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "scenario": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "applicability": {
+          "enum": [
+            "applicable",
+            "not-applicable",
+            "unresolved"
+          ]
+        },
+        "triggeringFacts": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "disposition": {
+          "enum": [
+            "open",
+            "mitigation-proposed",
+            "evidence-supplied",
+            "external-review-required",
+            "excluded"
+          ]
+        },
+        "treatmentRationale": {
+          "type": "string",
+          "maxLength": 10000
+        },
+        "applicabilityRationale": {
+          "type": "string",
+          "maxLength": 10000
+        },
+        "owner": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "requirementIds": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "evidenceIds": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "manual": {
+          "type": "boolean"
+        },
+        "needsReview": {
+          "type": "boolean"
+        }
+      }
+    },
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "acceptanceCriteria",
+        "owner",
+        "scope",
+        "status",
+        "threatIds",
+        "evidenceIds"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "acceptanceCriteria": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "owner": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "scope": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "status": {
+          "enum": [
+            "proposed",
+            "validated"
+          ]
+        },
+        "threatIds": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "evidenceIds": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "reference",
+        "scope",
+        "date",
+        "assessmentRevision",
+        "origin",
+        "requirementIds",
+        "threatIds"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "enum": [
+            "owner-declaration",
+            "implementation-reference",
+            "test-evidence"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "scope": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "assessmentRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "origin": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "requirementIds": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "threatIds": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
+    },
+    "pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "maturity"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9.-]{1,128}$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "maturity": {
+          "enum": [
+            "draft",
+            "reviewed"
+          ]
+        }
+      }
+    }
+  }
+}
