@@ -66,4 +66,8 @@ Acceptance test exports are written to `test-output/` under the current project.
 
 Version 0.2 is a substantial functional and visual iteration, not a completed enterprise assurance product. Content and regulatory screening prompts require specialist review before reliance. There is no scanner, runtime enforcement, authenticated review, automatic regulatory classification, repository ingestion, hosted collaboration or model integration.
 
-Real-browser desktop/narrow-screen and print inspection remain outstanding in this execution environment because local listening ports are blocked. No claim of visual acceptance is made from simulated UI tests. Formal framework mappings, deeper workflow semantics and broader adversarial regression fixtures are future work. Public licensing and third-party content attribution should be reviewed before a public release.
+Real-browser desktop/narrow-screen and print inspection remain outstanding in this execution environment because local listening ports are blocked. No claim of visual acceptance is made from simulated UI tests. Formal framework mappings, deeper workflow semantics and broader adversarial regression fixtures are future work. Third-party dependencies and referenced publications retain their respective licences and terms.
+
+## License
+
+MIT. See [LICENSE](LICENSE). Copyright (c) 2026 Mihai-Bogdan Ticu. Third-party dependencies and referenced framework publications retain their own licences; linking a publication does not relicense it.
